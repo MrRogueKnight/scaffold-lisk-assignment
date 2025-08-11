@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
     },
   },
   paths: {
-    deployments: "deploy-artifacts",
+    deployments: "deployments",
   },
   defaultNetwork: "localhost",
   namedAccounts: {
