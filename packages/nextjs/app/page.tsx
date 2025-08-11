@@ -54,46 +54,53 @@ const Home: NextPage = () => {
             </button>
           )}
         </div>
+        {deployedContractData && (
+          <div className="mt-1">
+            <span className="badge badge-info">YourContract at {deployedContractData.address}</span>
+          </div>
+        )}
       </div>
 
       {/* Contract Deployment Guidance */}
       {!deployedLoading && !deployedContractData && (
         <div className="w-full max-w-2xl mx-auto mt-6">
-          <div className="alert alert-warning">
-            <div>
-              <h3 className="font-bold">No contract found on Hardhat</h3>
-              <div className="text-sm">
-                Make sure your local blockchain is running and the contract is deployed:
-                <pre className="mt-2 p-2 bg-base-200 rounded">yarn chain</pre>
-                <pre className="mt-2 p-2 bg-base-200 rounded">yarn deploy --network hardhat</pre>
-                Then reload this page.
-              </div>
+          <div className="rounded-xl border border-warning/60 bg-base-200/80 p-4">
+            <h3 className="font-bold text-base-content">No contract found on Hardhat</h3>
+            <div className="text-sm text-base-content">
+              Make sure your local blockchain is running and the contract is deployed:
+              <pre className="mt-2 p-2 bg-base-300 rounded text-base-content">yarn chain</pre>
+              <pre className="mt-2 p-2 bg-base-300 rounded text-base-content">yarn deploy --network hardhat</pre>
+              Then reload this page.
             </div>
           </div>
         </div>
       )}
 
       {/* Contract Interaction Panel */}
-      <div className="w-full max-w-2xl mx-auto mt-12">
-        <h2 className="text-2xl font-bold mb-4">Interact with YourContract</h2>
-        <div className="mb-4 flex gap-2">
-          <button className="btn btn-primary" onClick={() => mintNFT()} disabled={isMining}>
-            {isMining ? "Minting..." : "Mint NFT"}
-          </button>
+      {deployedContractData && (
+        <div className="w-full max-w-2xl mx-auto mt-12">
+          <h2 className="text-2xl font-bold mb-4">Interact with YourContract</h2>
+          <div className="mb-4 flex gap-2">
+            <button className="btn btn-primary" onClick={() => mintNFT()} disabled={isMining}>
+              {isMining ? "Minting..." : "Mint NFT"}
+            </button>
+          </div>
+          {/* You can reuse this on any page! */}
+          {/* If you rename your contract, update the contractName below */}
+          <ContractUI contractName="YourContract" />
         </div>
-        {/* You can reuse this on any page! */}
-        {/* If you rename your contract, update the contractName below */}
-        <ContractUI contractName="YourContract" />
-      </div>
+      )}
 
       {/* Simple balance display */}
-      <div className="w-full max-w-2xl mx-auto mt-6">
-        <div className="bg-base-100 rounded-xl p-4 border border-base-300">
-          <div className="text-sm">
-            <span className="font-medium">Your NFT balance:</span> {balanceOfYou ? String(balanceOfYou) : "0"}
+      {deployedContractData && (
+        <div className="w-full max-w-2xl mx-auto mt-6">
+          <div className="bg-base-100 rounded-xl p-4 border border-base-300">
+            <div className="text-sm">
+              <span className="font-medium">Your NFT balance:</span> {balanceOfYou ? String(balanceOfYou) : "0"}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };
