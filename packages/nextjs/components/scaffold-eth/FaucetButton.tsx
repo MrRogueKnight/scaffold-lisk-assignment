@@ -9,7 +9,7 @@ import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { useTransactor } from "~~/hooks/scaffold-eth";
 
 // Number of ETH faucet sends to an address
-const NUM_OF_ETH = "1";
+const NUM_OF_ETH = "100";
 const FAUCET_ADDRESS = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 
 const localWalletClient = createWalletClient({

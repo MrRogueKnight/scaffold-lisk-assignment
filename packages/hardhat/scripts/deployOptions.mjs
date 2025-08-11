@@ -58,13 +58,25 @@ import inquirer from "inquirer";
     // Deployment logic remains the same
     for (const network of selectedNetworks) {
       console.log(`Deploying to ${network}...`);
-      await execa("hardhat", ["deploy", "--network", network], { stdio: "inherit" });
+      try {
+      const { stdout, stderr } = await execa("hardhat", ["deploy", "--network", network]);
+      console.log(`stdout:\n${stdout}`);
+      console.log(`stderr:\n${stderr}`);
+    } catch (e) {
+      console.error(e);
+    }
     }
   } else {
     // If "--network-options" was not provided, directly call "hardhat deploy" without network options
     const args = process.argv.slice(2).filter(arg => arg !== "--network-options");
 
     console.log(`Deploying with provided CLI arguments to`, args[1]);
-    await execa("hardhat", ["deploy", ...args], { stdio: "inherit" });
+    try {
+      const { stdout, stderr } = await execa("hardhat", ["deploy", ...args]);
+      console.log(`stdout:\n${stdout}`);
+      console.log(`stderr:\n${stderr}`);
+    } catch (e) {
+      console.error(e);
+    }
   }
 })();

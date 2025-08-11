@@ -4,7 +4,7 @@
   "scripts": {
     "account": "hardhat run scripts/listAccount.ts",
     "chain": "hardhat node --network hardhat --no-deploy",
-    "compile": "hardhat compile",
+    "compile": "hardhat compile --verbose",
     "deploy": "node scripts/deployOptions.mjs",
     "fork": "MAINNET_FORKING_ENABLED=true hardhat node --network hardhat --no-deploy",
     "generate": "hardhat run scripts/generateAccount.ts",

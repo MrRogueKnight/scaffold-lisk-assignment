@@ -1,14 +1,34 @@
 "use client";
 
-import Link from "next/link";
+import { ContractUI } from "./debug/_components/contract/ContractUI";
 import type { NextPage } from "next";
-import { useAccount } from "wagmi";
-import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { Logo } from "~~/components/Logo";
 import { Address } from "~~/components/scaffold-eth";
+import { useDeployedContractInfo } from "~~/hooks/scaffold-eth/useDeployedContractInfo";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth/useScaffoldContractRead";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth/useScaffoldContractWrite";
+import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 
 const Home: NextPage = () => {
   const { address: connectedAddress } = useAccount();
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+  const { targetNetwork } = useTargetNetwork();
+  const { data: deployedContractData, isLoading: deployedLoading } = useDeployedContractInfo("YourContract");
+
+  const { writeAsync: mintNFT, isMining } = useScaffoldContractWrite({
+    contractName: "YourContract",
+    functionName: "mintNFT",
+  });
+
+  const { data: balanceOfYou } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "balanceOf",
+    args: [connectedAddress],
+    // Only try reading when connected and contract deployed
+    enabled: Boolean(connectedAddress && deployedContractData),
+  });
 
   return (
     <section className="flex items-center flex-col flex-grow pt-10">
@@ -23,48 +43,64 @@ const Home: NextPage = () => {
           <p className="my-2 font-medium">Connected Address:</p>
           <Address address={connectedAddress} />
         </div>
-        <p className="text-center text-base text-slate-400">
-          Get started by editing{" "}
-          <code className="italic bg-base-100 text-white p-1 rounded-md text-base font-bold max-w-full break-words break-all inline-block">
-            packages/nextjs/app/page.tsx
-          </code>
-        </p>
-        <p className="text-center text-base text-slate-400">
-          Edit your smart contract{" "}
-          <code className="italic bg-base-100 text-white p-1 rounded-md text-base font-bold max-w-full break-words break-all inline-block">
-            YourContract.sol
-          </code>{" "}
-          in{" "}
-          <code className="italic bg-base-100 text-white p-1 rounded-md text-base font-bold max-w-full break-words break-all inline-block">
-            packages/hardhat/contracts
-          </code>
-        </p>
+        {/* Network status */}
+        <div className="flex items-center gap-2 mb-2">
+          <span className={`badge ${chain?.id === targetNetwork.id ? "badge-success" : "badge-warning"}`}>
+            {chain?.id === targetNetwork.id ? `Connected to ${chain?.name}` : `Wrong network: ${chain?.name || "N/A"}`}
+          </span>
+          {chain?.id !== targetNetwork.id && (
+            <button className="btn btn-sm" onClick={() => switchNetwork?.(targetNetwork.id)}>
+              Switch to Hardhat
+            </button>
+          )}
+        </div>
+        {deployedContractData && (
+          <div className="mt-1">
+            <span className="badge badge-info">YourContract at {deployedContractData.address}</span>
+          </div>
+        )}
       </div>
 
-      <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
-        <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
-          <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-            <BugAntIcon className="h-8 w-8" />
-            <p>
-              Tinker with your smart contract using the{" "}
-              <Link href="/debug" passHref className="link">
-                Debug Contracts
-              </Link>{" "}
-              tab.
-            </p>
-          </div>
-          <div className="flex flex-col bg-base-100 px-10 py-10 text-center items-center max-w-xs rounded-3xl">
-            <MagnifyingGlassIcon className="h-8 w-8" />
-            <p>
-              Explore your local transactions with the{" "}
-              <Link href="/blockexplorer" passHref className="link">
-                Block Explorer
-              </Link>{" "}
-              tab.
-            </p>
+      {/* Contract Deployment Guidance */}
+      {!deployedLoading && !deployedContractData && (
+        <div className="w-full max-w-2xl mx-auto mt-6">
+          <div className="rounded-xl border border-warning/60 bg-base-200/80 p-4">
+            <h3 className="font-bold text-base-content">No contract found on Hardhat</h3>
+            <div className="text-sm text-base-content">
+              Make sure your local blockchain is running and the contract is deployed:
+              <pre className="mt-2 p-2 bg-base-300 rounded text-base-content">yarn chain</pre>
+              <pre className="mt-2 p-2 bg-base-300 rounded text-base-content">yarn deploy --network hardhat</pre>
+              Then reload this page.
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Contract Interaction Panel */}
+      {deployedContractData && (
+        <div className="w-full max-w-2xl mx-auto mt-12">
+          <h2 className="text-2xl font-bold mb-4">Interact with YourContract</h2>
+          <div className="mb-4 flex gap-2">
+            <button className="btn btn-primary" onClick={() => mintNFT()} disabled={isMining}>
+              {isMining ? "Minting..." : "Mint NFT"}
+            </button>
+          </div>
+          {/* You can reuse this on any page! */}
+          {/* If you rename your contract, update the contractName below */}
+          <ContractUI contractName="YourContract" />
+        </div>
+      )}
+
+      {/* Simple balance display */}
+      {deployedContractData && (
+        <div className="w-full max-w-2xl mx-auto mt-6">
+          <div className="bg-base-100 rounded-xl p-4 border border-base-300">
+            <div className="text-sm">
+              <span className="font-medium">Your NFT balance:</span> {balanceOfYou ? String(balanceOfYou) : "0"}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
