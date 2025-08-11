@@ -10,9 +10,12 @@ export type ScaffoldConfig = {
   walletAutoConnect: boolean;
 };
 
+const isVercel = process.env.NEXT_PUBLIC_VERCEL === "1" || process.env.NEXT_PUBLIC_ON_VERCEL === "true";
+
 const scaffoldConfig = {
   // The networks on which your DApp is live
-  targetNetworks: [chains.hardhat, liskSepolia],
+  // On Vercel/cloud, do NOT include localhost. Use a public testnet only.
+  targetNetworks: isVercel ? [liskSepolia] : [chains.hardhat, liskSepolia],
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect if you only target the local network (default is 4000)
