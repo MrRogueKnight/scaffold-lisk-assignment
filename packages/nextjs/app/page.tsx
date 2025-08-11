@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ContractUI } from "./debug/_components/contract/ContractUI";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
@@ -39,6 +40,14 @@ const Home: NextPage = () => {
             packages/hardhat/contracts
           </code>
         </p>
+      </div>
+
+      {/* Contract Interaction Panel */}
+      <div className="w-full max-w-2xl mx-auto mt-12">
+        <h2 className="text-2xl font-bold mb-4">Interact with YourContract</h2>
+        {/* You can reuse this on any page! */}
+        {/* If you rename your contract, update the contractName below */}
+        <ContractUI contractName="YourContract" />
       </div>
 
       <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
