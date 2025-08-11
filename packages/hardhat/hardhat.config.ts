@@ -31,6 +31,9 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  paths: {
+    deployments: "deploy-artifacts",
+  },
   defaultNetwork: "localhost",
   namedAccounts: {
     deployer: {
@@ -46,6 +49,9 @@ const config: HardhatUserConfig = {
         url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
         enabled: process.env.MAINNET_FORKING_ENABLED === "true",
       },
+    },
+    localhost: {
+      url: "http://127.0.0.1:8545",
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
