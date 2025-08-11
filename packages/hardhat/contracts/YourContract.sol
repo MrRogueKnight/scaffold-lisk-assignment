@@ -16,6 +16,7 @@ contract YourContract {
 	// State Variables
 	address public immutable owner;
 	string public greeting = "Building Unstoppable Apps!!!";
+	string public purpose = "To learn Scaffold-Lisk";
 	bool public premium = false;
 	uint256 public totalCounter = 0;
 	mapping(address => uint) public userGreetingCounter;
@@ -27,6 +28,8 @@ contract YourContract {
 		bool premium,
 		uint256 value
 	);
+
+	event PurposeChange(address indexed purposeSetter, string newPurpose);
 
 	// Constructor: Called once on contract deployment
 	// Check packages/hardhat/deploy/00_deploy_your_contract.ts
@@ -47,6 +50,12 @@ contract YourContract {
 	 *
 	 * @param _newGreeting (string memory) - new greeting to save on the contract
 	 */
+	function setPurpose(string memory _newPurpose) public {
+    purpose = _newPurpose;
+    console.log("Setting new purpose '%s' from %s", _newPurpose, msg.sender);
+    emit PurposeChange(msg.sender, _newPurpose);
+  }
+
 	function setGreeting(string memory _newGreeting) public payable {
 		// Print data to the hardhat chain console. Remove when deploying to a live network.
 		console.log(
