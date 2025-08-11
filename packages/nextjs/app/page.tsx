@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           </span>
           {chain?.id !== targetNetwork.id && (
             <button className="btn btn-sm" onClick={() => switchNetwork?.(targetNetwork.id)}>
-              Switch to Hardhat
+              {`Switch to ${targetNetwork.name}`}
             </button>
           )}
         </div>
