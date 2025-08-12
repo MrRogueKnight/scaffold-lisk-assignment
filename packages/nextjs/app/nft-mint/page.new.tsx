@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useAccount, useNetwork } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
@@ -94,10 +95,13 @@ export default function NFTPage() {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="w-full lg:w-1/3">
               <div className="bg-base-100 p-4 rounded-lg shadow-md">
-                <img
+                <Image
                   src={selectedNFT.image}
                   alt={selectedNFT.name}
+                  width={400}
+                  height={400}
                   className="rounded-lg w-full h-auto object-cover mb-4"
+                  priority
                 />
                 <h2 className="text-xl font-bold text-center">{selectedNFT.name}</h2>
               </div>
@@ -161,7 +165,13 @@ export default function NFTPage() {
                         : "border-base-300 hover:border-primary/50"
                     }`}
                   >
-                    <img src={nft.image} alt={nft.name} className="w-full h-32 object-cover" />
+                    <Image
+                      src={nft.image}
+                      alt={nft.name}
+                      width={150}
+                      height={150}
+                      className="w-full h-32 object-cover"
+                    />
                     <div className="p-2 text-center">
                       <p className="text-sm font-medium truncate">{nft.name}</p>
                     </div>
