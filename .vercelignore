@@ -1,0 +1,38 @@
+# Ignore everything by default
+*/
+
+# Include only the necessary files for the Next.js app
+!packages/nextjs/
+!package.json
+!yarn.lock
+!vercel.json
+
+# Exclude development and test files
+**/node_modules
+**/.next
+**/.git
+**/.github
+**/.vscode
+**/test
+**/tests
+**/__tests__
+**/*.test.*
+**/*.spec.*
+
+# Hardhat files
+packages/hardhat/
+
+# Other packages
+packages/eslint-config/
+packages/tsconfig/
+packages/ui/
+
+# Environment files (handled by Vercel)
+.env*
+!.env.example
+
+# Build outputs
+.next/
+out/
+dist/
+build/
