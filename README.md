@@ -70,7 +70,39 @@ Run smart contract test with `yarn hardhat:test`
 - Edit your frontend in `packages/nextjs/pages`
 - Edit your deployment scripts in `packages/hardhat/deploy`
 
-## Deploy Contracts to Superchain Testnet(s)
+## NFT Minting DApp
+
+This project includes an NFT minting dApp that allows users to mint NFTs from the Mr. Rogue Knight NFT collection.
+
+### Features
+- Mint NFTs directly from the collection
+- View your owned NFTs
+- Responsive design that works on desktop and mobile
+- Integration with popular Web3 wallets
+
+### Local Development
+
+1. Start the local Hardhat node:
+
+```bash
+yarn chain
+```
+
+2. In a new terminal, deploy the MyNFT contract:
+
+```bash
+yarn deploy --network hardhat
+```
+
+3. Start the Next.js development server:
+
+```bash
+yarn start
+```
+
+4. Visit `http://localhost:3000` and click on "Mint NFT" in the navigation to access the minting page.
+
+### Deploy Contracts to Superchain Testnet(s)
 
 To deploy contracts to a remote testnet (e.g. Optimism Sepolia), follow the steps below:
 
