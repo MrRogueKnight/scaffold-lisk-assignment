@@ -20,7 +20,12 @@ contract YourContract is ERC721, Ownable {
 
     mapping(address => bool) public hasMinted;
     string private _baseTokenURI;
-    uint256 public maxSupply = 10000; // Maximum number of NFTs that can be minted
+    uint256 public constant MAX_SUPPLY = 10000; // Maximum number of NFTs that can be minted
+    
+    // Alias for MAX_SUPPLY for backward compatibility
+    function maxSupply() public pure returns (uint256) {
+        return MAX_SUPPLY;
+    }
 
     // State Variables
     string public greeting = "Building Unstoppable Apps!!!";
