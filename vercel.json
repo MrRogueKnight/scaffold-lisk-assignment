@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "buildCommand": "cd packages/nextjs && yarn build",
+  "installCommand": "yarn install --cwd packages/nextjs",
+  "builds": [
+    {
+      "src": "packages/nextjs/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "packages/nextjs" }
+  ],
+  "env": {
+    "NEXT_PUBLIC_NETWORK": "sepolia",
+    "NEXT_PUBLIC_DEFAULT_CHAIN_ID": "11155111"
+  }
+}
