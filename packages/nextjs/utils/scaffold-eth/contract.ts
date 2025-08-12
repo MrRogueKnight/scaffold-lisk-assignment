@@ -152,7 +152,9 @@ type UseScaffoldArgsParam<
   TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>>,
 > = TFunctionName extends FunctionNamesWithInputs<TContractName>
   ? {
-      args: OptionalTupple<UnionToIntersection<AbiFunctionArguments<ContractAbi<TContractName>, TFunctionName>>>;
+      args?:
+        | OptionalTupple<UnionToIntersection<AbiFunctionArguments<ContractAbi<TContractName>, TFunctionName>>>
+        | undefined;
     }
   : {
       args?: never;
