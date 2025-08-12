@@ -51,8 +51,11 @@ export const Faucet = () => {
         console.error("⚡️ ~ file: Faucet.tsx:getFaucetAddress ~ error", error);
       }
     };
-    getFaucetAddress();
-  }, []);
+    // Only try connecting to the local faucet when actually on the Hardhat network
+    if (ConnectedChain?.id === hardhat.id) {
+      getFaucetAddress();
+    }
+  }, [ConnectedChain?.id]);
 
   const sendETH = async () => {
     if (!faucetAddress) {

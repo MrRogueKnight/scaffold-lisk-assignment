@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
   paths: {
     deployments: "deployments",
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: "liskSepolia",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
