@@ -27,6 +27,11 @@ export const menuLinks: HeaderMenuLink[] = [
     icon: <HomeIcon className="h-4 w-4" />,
   },
   {
+    label: "Mint NFT",
+    href: "/nft-mint",
+    icon: <span className="h-4 w-4">🖼️</span>,
+  },
+  {
     label: "Debug Contracts",
     href: "/debug",
     icon: <BugAntIcon className="h-4 w-4" />,
