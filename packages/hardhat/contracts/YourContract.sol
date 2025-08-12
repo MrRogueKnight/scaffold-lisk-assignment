@@ -20,6 +20,7 @@ contract YourContract is ERC721, Ownable {
 
     mapping(address => bool) public hasMinted;
     string private _baseTokenURI;
+    uint256 public maxSupply = 10000; // Maximum number of NFTs that can be minted
 
     // State Variables
     string public greeting = "Building Unstoppable Apps!!!";
@@ -103,10 +104,15 @@ contract YourContract is ERC721, Ownable {
      */
     function mintNFT() public {
         require(!hasMinted[msg.sender], "Already minted");
+        require(_tokenIdCounter.current() < maxSupply, "Max supply reached");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         hasMinted[msg.sender] = true;
+    }
+    
+    function totalSupply() public view returns (uint256) {
+        return _tokenIdCounter.current();
     }
 
     function _baseURI() internal view override returns (string memory) {
